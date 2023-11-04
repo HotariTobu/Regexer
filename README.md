@@ -12,7 +12,7 @@
 
 ## Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/W6JeTADNjGE?si=NVzj-3Nln7sb5MJw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[Youtube](https://www.youtube.com/watch?v=W6JeTADNjGE)
 
 ## VS.
 
