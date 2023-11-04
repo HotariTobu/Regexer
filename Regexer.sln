@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Regexer", "Regexer\Regexer.csproj", "{DEAFAB07-6FF9-472B-BD63-A874BD9C1556}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedWPF", "..\SharedWPF\SharedWPF\SharedWPF.shproj", "{AE6E9D7E-4F8F-43C0-A1EB-9BCF75EF9FCB}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Encodable", "..\Encodable\Encodable\Encodable.shproj", "{944A2548-1BFE-46C0-9CED-12CD96F17AFC}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Encodable\Encodable\Encodable.projitems*{944a2548-1bfe-46c0-9ced-12cd96f17afc}*SharedItemsImports = 13
+		..\SharedWPF\SharedWPF\SharedWPF.projitems*{ae6e9d7e-4f8f-43c0-a1eb-9bcf75ef9fcb}*SharedItemsImports = 13
+		..\Encodable\Encodable\Encodable.projitems*{deafab07-6ff9-472b-bd63-a874bd9c1556}*SharedItemsImports = 5
+		..\SharedWPF\SharedWPF\SharedWPF.projitems*{deafab07-6ff9-472b-bd63-a874bd9c1556}*SharedItemsImports = 5
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEAFAB07-6FF9-472B-BD63-A874BD9C1556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEAFAB07-6FF9-472B-BD63-A874BD9C1556}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEAFAB07-6FF9-472B-BD63-A874BD9C1556}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEAFAB07-6FF9-472B-BD63-A874BD9C1556}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D93DDC40-3C2E-45D8-ABFA-6E6084EA5BC3}
+	EndGlobalSection
+EndGlobal

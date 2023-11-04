@@ -1,0 +1,275 @@
+﻿<Window x:Class="Regexer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Regexer"
+        xmlns:shared="clr-namespace:SharedWPF"
+        mc:Ignorable="d"
+        Title="Regexer" Height="600" Width="1000"
+        Closed="Window_Closed">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <local:StringDictionary Path="Resources/String"/>
+                <ResourceDictionary Source="/Regexer;component/Resources/Brushes.xaml"/>
+                <ResourceDictionary Source="/Regexer;component/Resources/Shapes.xaml"/>
+                <d:ResourceDictionary Source="Resources/String/en-us.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <shared:BooleanToBrushConverter x:Key="ErrorBooleanToBrushConverter" TrueBrush="{StaticResource BRUSH_Error}" FalseBrush="Transparent"/>
+            <shared:BooleanToBrushConverter x:Key="WarningBooleanToBrushConverter" TrueBrush="{StaticResource BRUSH_Warning}" FalseBrush="Transparent"/>
+            <Style TargetType="TextBlock" x:Key="LabelText">
+                <Setter Property="Margin" Value="5,5,0,0"/>
+            </Style>
+            <shared:BooleanToStringConverter x:Key="BooleanToStringConverter"/>
+            <shared:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+            <shared:BooleanToInvertedVisibilityConverter x:Key="BooleanToInvertedVisibilityConverter"/>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <d:Window.DataContext>
+        <local:MWVM/>
+    </d:Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="IrremovableItemTemplate">
+                        <TextBlock Text="{Binding Pattern}"/>
+                    </DataTemplate>
+                    <DataTemplate x:Key="RemovableItemTemplate">
+                        <local:RemovableItemBase Content="{Binding Pattern}" RemoveButtonMargin="3"/>
+                    </DataTemplate>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="10"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="IsEditable" Value="True"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="TextSearch.TextPath" Value="Pattern"/>
+                        <Setter Property="ItemTemplateSelector">
+                            <Setter.Value>
+                                <local:PatternItemSelector IrremovableItemTemplate="{StaticResource IrremovableItemTemplate}" RemovableItemTemplate="{StaticResource RemovableItemTemplate}"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="ItemContainerStyle">
+                            <Setter.Value>
+                                <Style TargetType="ComboBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{StaticResource STRING_SearchPattern}"/>
+                <Border ToolTip="{Binding HasPatternWarning, Converter={StaticResource BooleanToStringConverter}, ConverterParameter={StaticResource STRING_PatternWarning}}"
+                    BorderBrush="{Binding HasPatternWarning, Converter={StaticResource WarningBooleanToBrushConverter}}" BorderThickness="1" Margin="3" Grid.Column="1">
+                    <Border ToolTip="{Binding SearchPatternError}"
+                        BorderBrush="{Binding HasSearchError, Converter={StaticResource ErrorBooleanToBrushConverter}}" BorderThickness="1">
+                        <ComboBox Text="{Binding SearchPattern}" ItemsSource="{Binding SearchPatternItems}" SelectedIndex="{Binding SearchPatternIndex}"/>
+                    </Border>
+                </Border>
+                <TextBlock Text="{StaticResource STRING_ReplacePattern}" Grid.Row="1"/>
+                <Border ToolTip="{Binding HasPatternWarning, Converter={StaticResource BooleanToStringConverter}, ConverterParameter={StaticResource STRING_PatternWarning}}"
+                    BorderBrush="{Binding HasPatternWarning, Converter={StaticResource WarningBooleanToBrushConverter}}" BorderThickness="1" Margin="3" Grid.Column="1" Grid.Row="1">
+                    <Border ToolTip="{Binding ReplacePatternError}"
+                        BorderBrush="{Binding HasReplaceError, Converter={StaticResource ErrorBooleanToBrushConverter}}" BorderThickness="1">
+                        <ComboBox Text="{Binding ReplacePattern}" ItemsSource="{Binding ReplacePatternItems}" SelectedIndex="{Binding ReplacePatternIndex}"/>
+                    </Border>
+                </Border>
+                <TextBlock Text="{StaticResource STRING_Options}" Grid.Row="2"/>
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Margin="4">
+                    <StackPanel.Resources>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Fill" Value="Black"/>
+                            <Setter Property="Margin" Value="10,0,4,0"/>
+                            <Setter Property="Width" Value="0.5"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <CheckBox IsChecked="{Binding IsIgnoreCase}" Content="{StaticResource STRING_IgnoreCase}"/>
+                    <Rectangle/>
+                    <CheckBox IsChecked="{Binding IsEscape}" Content="{StaticResource STRING_Escape}"/>
+                </StackPanel>
+            </Grid>
+            <TabControl Grid.Row="1">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Padding" Value="10,5,10,5"/>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="{StaticResource STRING_Live}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{StaticResource STRING_InputText}" Style="{StaticResource LabelText}"/>
+                        <TextBlock Text="{StaticResource STRING_OutputText}" Style="{StaticResource LabelText}" Grid.Column="1"/>
+                        <local:HighlightableTextBox HighlightBrush="{StaticResource BRUSH_Highlight}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                                                    Text="{Binding InputText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Ranges="{Binding HighlightRanges}"
+                                                    Grid.Row="1" SelectionChanged="HighlightableTextBox_SelectionChanged"/>
+                        <TextBox Text="{Binding OutputText}" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                                 Grid.Column="1" Grid.Row="1" CommandManager.PreviewExecuted="OutputTextBox_PreviewExecuted"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{StaticResource STRING_File}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="10"/>
+                                </Style>
+                                <Style TargetType="local:PathBox">
+                                    <Setter Property="Margin" Value="5"/>
+                                    <Setter Property="Padding" Value="10,5,10,5"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{StaticResource STRING_InputPath}"/>
+                            <local:PathBox Path="{Binding InputPath}" Grid.Column="1"/>
+                            <TextBlock Text="{StaticResource STRING_OutputPath}" Grid.Row="1"/>
+                            <local:PathBox Path="{Binding OutputPath}" Grid.Column="1" Grid.Row="1" IsEnabled="{Binding IsOverwrite, Converter={StaticResource InvertBooleanConverter}}"/>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Header="{StaticResource STRING_Options}">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Padding="2,10,2,0">
+                                    <StackPanel>
+                                        <StackPanel.Resources>
+                                            <Style TargetType="Separator">
+                                                <Setter Property="Margin" Value="0,10,0,10"/>
+                                            </Style>
+                                            <Style TargetType="Rectangle">
+                                                <Setter Property="Height" Value="5"/>
+                                            </Style>
+                                        </StackPanel.Resources>
+                                        <CheckBox IsChecked="{Binding IsOverwrite}" Content="{StaticResource STRING_Overwrite}"/>
+                                        <Separator/>
+                                        <TextBlock Text="{StaticResource STRING_FileFilter}"/>
+                                        <TextBlock Text="{StaticResource STRING_WhitePattern}" Style="{StaticResource LabelText}"/>
+                                        <TextBox Text="{Binding WhiteFilter}"/>
+                                        <TextBlock Text="{StaticResource STRING_BlackPattern}" Style="{StaticResource LabelText}"/>
+                                        <TextBox Text="{Binding BlackFilter}"/>
+                                        <Separator/>
+                                        <CheckBox IsChecked="{Binding IsRename}" Content="{StaticResource STRING_Rename}" IsEnabled="{Binding IsOverwrite, Converter={StaticResource InvertBooleanConverter}}"/>
+                                        <StackPanel IsEnabled="{Binding IsRename}">
+                                            <StackPanel.Resources>
+                                                <DataTemplate x:Key="PatternSetItemTemplate">
+                                                    <TextBlock Text="{Binding Name}"/>
+                                                </DataTemplate>
+                                            </StackPanel.Resources>
+                                            <TextBlock Text="{StaticResource STRING_File}" Style="{StaticResource LabelText}"/>
+                                            <ComboBox ItemsSource="{Binding PatternSets}" SelectedIndex="{Binding FilePatternSetIndex}" ItemTemplate="{StaticResource PatternSetItemTemplate}"/>
+                                            <TextBlock Text="{StaticResource STRING_Directory}" Style="{StaticResource LabelText}"/>
+                                            <ComboBox ItemsSource="{Binding PatternSets}" SelectedIndex="{Binding DirectoryPatternSetIndex}" ItemTemplate="{StaticResource PatternSetItemTemplate}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </GroupBox>
+                            <TreeView ItemsSource="{Binding FileTreeRoot.Nodes}" Grid.Column="1">
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate DataType="{x:Type local:TreeNode}" ItemsSource="{Binding Nodes}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding IsChecked}">
+                                                <TextBlock Text="{Binding FromName}"/>
+                                            </CheckBox>
+                                            <Path Data="M5,0 L10,5 L5,10 V7 H0 V3 H5 Z" Stroke="HotPink" StrokeThickness="1" Stretch="Uniform" Margin="10,0,10,0" Grid.Column="1"/>
+                                            <TextBlock Text="{Binding ToName}"/>
+                                        </StackPanel>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ProgressBar Value="{Binding ProgressValue}" Maximum="{Binding ProgressMaximum}" Margin="5"/>
+                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                <StackPanel.Resources>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Margin" Value="5"/>
+                                        <Setter Property="Padding" Value="10,5,10,5"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Button Content="{StaticResource STRING_Replace}" Click="ReplaceButton_Click" Visibility="{Binding IsReplacingFiles, Converter={StaticResource BooleanToInvertedVisibilityConverter}}"/>
+                                <Button Content="{StaticResource STRING_Cancel}" Click="CancelButton_Click" Visibility="{Binding IsReplacingFiles, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        <Grid Grid.Column="1" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Content="{StaticResource STRING_StorePatternSet}" Padding="5" Click="StorePatternSetButton_Click"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{StaticResource STRING_PatternSetName}" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding PatternSetName, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Margin="5,9,0,5" Padding="2,5,2,5"
+                         VerticalContentAlignment="Center" Grid.Column="1" PreviewTextInput="PatternSetNameTextBox_PreviewTextInput"/>
+            </Grid>
+            <Border BorderBrush="LightGray" BorderThickness="1" Grid.Row="2">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding PatternSets}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <local:RemovableItem Content="{Binding Name}" Padding="5" Click="PatternSetItem_Click"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

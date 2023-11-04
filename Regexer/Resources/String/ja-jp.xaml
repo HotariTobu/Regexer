@@ -1,0 +1,34 @@
+﻿<ResourceDictionary x:Uid="ResourceDictionary_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="STRING_SearchPattern">検索パターン</sys:String>
+    <sys:String x:Key="STRING_ReplacePattern">置換パターン</sys:String>
+    <sys:String x:Key="STRING_Options">オプション</sys:String>
+    <sys:String x:Key="STRING_IgnoreCase">大文字と小文字を区別しない</sys:String>
+    <sys:String x:Key="STRING_Escape">エスケープする</sys:String>
+    
+    <sys:String x:Key="STRING_RegexError">正しくないパターン</sys:String>
+    <sys:String x:Key="STRING_ReplaceError">無効なパターン</sys:String>
+    <sys:String x:Key="STRING_PatternWarning">パターンの数が一致しません</sys:String>
+
+    <sys:String x:Key="STRING_Live">リアルタイム</sys:String>
+    <sys:String x:Key="STRING_InputText">入力テキスト</sys:String>
+    <sys:String x:Key="STRING_OutputText">出力テキスト</sys:String>
+    
+    <sys:String x:Key="STRING_File">ファイル</sys:String>
+    <sys:String x:Key="STRING_InputPath">入力パス</sys:String>
+    <sys:String x:Key="STRING_OutputPath">出力パス</sys:String>
+    
+    <sys:String x:Key="STRING_Overwrite">上書き</sys:String>
+    <sys:String x:Key="STRING_FileFilter">ファイルフィルタ</sys:String>
+    <sys:String x:Key="STRING_WhitePattern">ホワイトパターン</sys:String>
+    <sys:String x:Key="STRING_BlackPattern">ブラックパターン</sys:String>
+    <sys:String x:Key="STRING_Rename">リネーム</sys:String>
+    <sys:String x:Key="STRING_Directory">ディレクトリ</sys:String>
+
+    <sys:String x:Key="STRING_Replace">置換</sys:String>
+    <sys:String x:Key="STRING_Cancel">キャンセル</sys:String>
+
+    <sys:String x:Key="STRING_StorePatternSet">パターンセットをとっておく</sys:String>
+    <sys:String x:Key="STRING_PatternSetName">パターンセット名</sys:String>
+</ResourceDictionary>
